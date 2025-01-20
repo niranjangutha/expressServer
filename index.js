@@ -29,6 +29,13 @@ app.get("/users", (req, res) => {
   res.status(200).send(usersList).json();
 });
 
+//! all will be validate the unexpected URL will reach in to the server.
+//! will provide the proper response message to the client.
+app.all("*", (req, res) => {
+    res.status(200).send("No url found, please try with valid url");
+  });
+
+  
 app.listen(PORT, (err, res) => {
   /*
     !commented code describes the to create the new custom error to throw an error while creating the server.
