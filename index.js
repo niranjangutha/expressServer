@@ -1,36 +1,65 @@
 const express = require("express");
+const fs = require("fs");
 
 const app = express();
 const PORT = 4000;
 
-const usersList = {
-  users: [
-    {
-      id: 1,
-      firstName: "Aaliyah",
-      lastName: "Hanson",
-      maidenName: "",
-    },
-    {
-      id: 2,
-      firstName: "test",
-      lastName: "Martinez",
-      maidenName: "Adams",
-    },
-    {
-      id: 3,
-      firstName: "Niranjan",
-      lastName: "gutha",
-      maidenName: "",
-    },
-  ],
-};
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 app.get("/users", (req, res) => {
-  res.status(200).send(usersList).json();
+  const usersList = fs.readFileSync("./data/usersList.json", "utf-8");
+  if(usersList){
+    res.status(200).send(usersList).json();
+  }
+  else{
+  res.status(200).send({message : "NO users data found"}).json();
+  }
 });
 
+app.post("/useradd", (req, res) => {
+  try {
+    const reqbody = req.body;
+    var usersList = fs.readFileSync("./data/usersList.json", "utf-8");
+    usersList = JSON.parse(usersList);
+    let maxuid = 0;
+    let ids = usersList.users.filter((val) => val.id).length;
+    maxuid = ids + 1;
+
+    reqbody.id = maxuid;
+    usersList.users.push(reqbody);
+    usersList = JSON.stringify(usersList);
+    fs.writeFileSync("./data/usersList.json", usersList);
+
+    console.log("insert success");
+    res.status(200).send("insert data successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+});
+
+app.get("/user/:id", (req, res) => {
+  try {
+    const reqbody = req.params.id;
+    var usersList = fs.readFileSync("./data/usersList.json", "utf-8");
+    usersList = JSON.parse(usersList);
+    let ids = usersList.users.find((val) => {
+      if (val.id == reqbody) {
+        return val;
+      }
+    });
+    if (ids) {
+      res.status(200).send(ids);
+    } else {
+      res.status(200).send("no data found");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+});
 
 //! all will be validate the unexpected URL will reach in to the server.
 //! will provide the proper response message to the client.
