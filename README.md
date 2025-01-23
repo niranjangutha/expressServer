@@ -15,3 +15,12 @@ create the simple express server
 9. create the router(get) for view the user details based on the userid using "get" method and data having the JSON file.
 10. create the router(POST) for add the new user details using "post" method and data added to the JSON file.
 11. using fs module to read and write the data from JSON files.
+
+23/01/2025
+
+12. create the logs using the  morgan npm for local or need to store on log file for feature reference.
+    npm install morgan --save
+13. use morgan for the express middle ware to trigger the logs, if we didint specify the steam then log will be print in the local or else it will be store the specied path.
+14. morgan.token('type', function (req, res) { return req.headers['content-type'] }) -- this will create the customised tokes aginest req and res.
+15. moragan having some predefined formats "combined","common","dev","short","tiny"
+16. morgan having some predefined tokes as :date[clf] :method  :url :http-version :remote-addr :remote-user :user-agent :status :response-time ms

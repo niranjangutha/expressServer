@@ -1,0 +1,4 @@
+23/Jan/2025:03:24:36 +0000 GET  /user/2 1.1 ::ffff:127.0.0.1 - Thunder Client (https://www.thunderclient.com) 200 2.856 ms 6.646 ms application/json
+23/Jan/2025:03:24:39 +0000 POST  /useradd 1.1 ::ffff:127.0.0.1 - Thunder Client (https://www.thunderclient.com) 200 1.250 ms 2.206 ms application/json
+23/Jan/2025:03:24:42 +0000 GET  /users 1.1 ::ffff:127.0.0.1 - got (https://github.com/sindresorhus/got) 200 2.074 ms 6.369 ms -
+23/Jan/2025:03:25:33 +0000 GET  /users 1.1 ::ffff:127.0.0.1 - got (https://github.com/sindresorhus/got) 200 0.683 ms 1.502 ms application/json

@@ -1,11 +1,22 @@
 const express = require("express");
 const fs = require("fs");
+const morgan = require('morgan');
+const path = require('path');
 
 const app = express();
 const PORT = 4000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// specify the logs store location
+var accessLogStream = fs.createWriteStream(path.join(__dirname+"/Log", 'access.log'), { flags: 'a' })
+morgan.token('type', function (req, res) { return req.headers['content-type'] });
+
+//  specify the output log format
+const morganFormat = ":date[clf] :method  :url :http-version :remote-addr :remote-user :user-agent :status :response-time ms :total-time ms :type";
+app.use(morgan(morganFormat)); // logs print in the terminal without specify the stream.
+app.use(morgan(morganFormat,{stream : accessLogStream })); // logs store in the specified path.
 
 
 app.get("/users", (req, res) => {
@@ -32,7 +43,7 @@ app.post("/useradd", (req, res) => {
     usersList = JSON.stringify(usersList);
     fs.writeFileSync("./data/usersList.json", usersList);
 
-    console.log("insert success");
+    morgan("insert success");
     res.status(200).send("insert data successfully");
   } catch (error) {
     console.error(error);
